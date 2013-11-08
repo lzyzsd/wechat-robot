@@ -14,7 +14,8 @@
     "mocha": "*",
     "chai": "*",
     "sinon": "*",
-    "coffee-script": "*"
+    "coffee-script": "*",
+    "blanket": "*"
   },
   "repository": {
     "type": "git",
