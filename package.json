@@ -30,5 +30,11 @@
   "license": "BSD",
   "bugs": {
     "url": "https://github.com/lzyzsd/wechat-robot/issues"
+  },
+  "scripts": {
+    "blanket": {
+      "pattern": "src"
+    },
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha -R spec --compilers coffee:coffee-script test/**/*.test.coffee"
   }
 }
