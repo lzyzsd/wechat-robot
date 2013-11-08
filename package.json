@@ -13,7 +13,8 @@
   "devDependencies": {
     "mocha": "*",
     "chai": "*",
-    "sinon": "*"
+    "sinon": "*",
+    "coffee-script": "*"
   },
   "repository": {
     "type": "git",
