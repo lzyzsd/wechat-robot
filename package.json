@@ -1,0 +1,32 @@
+{
+  "name": "wechat-robot",
+  "version": "0.0.1",
+  "description": "微信自动回复",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "dependencies": {
+    "lodash": "*",
+    "when": "*"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "chai": "*",
+    "sinon": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lzyzsd/wechat-robot"
+  },
+  "keywords": [
+    "wechat",
+    "weixin",
+    "微信"
+  ],
+  "author": "bruce",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/lzyzsd/wechat-robot/issues"
+  }
+}
