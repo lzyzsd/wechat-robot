@@ -2,7 +2,7 @@ expect = require('chai').expect
 sinon = require 'sinon'
 
 Rule = require '../src/rule'
-Message = require('../src/message').message
+Message = require '../src/message'
 
 describe 'Webot', ->
   textRule =

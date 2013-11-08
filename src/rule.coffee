@@ -22,9 +22,9 @@ class Rule
     deferred = whenjs.defer()
     if @match message
       @handler (err, msg) ->
-        if err then deferred.reject(err) else deferred.resolve(msg)
+        if err then deferred.reject err else deferred.resolve msg
     else
-      deferred.reject('unmatched')
+      deferred.reject 'unmatched'
     deferred.promise
 
 module.exports = Rule
