@@ -4,7 +4,43 @@ sinon = require 'sinon'
 Rule = require '../src/rule'
 Message = require '../src/message'
 
-describe 'Webot', ->
+describe 'Construct Rule', ->
+  textRule =
+    new Rule
+      name: 'rule name'
+      type: 'text'
+      pattern:
+        content: /hi/
+      handler: (callback) ->
+        replyMessage = 'welcome'
+        callback null, replyMessage
+
+  it 'string rule pattern', (done) ->
+    rule = new Rule
+      name: 'rule name'
+      type: 'text'
+      pattern: 'hi'
+      handler: (cb) ->
+        handlerCalled = true
+        cb null, 'welcome'
+
+    expect(rule.pattern).to.be.an.instanceof RegExp
+    done()
+
+  it 'string rule pattern', (done) ->
+    pattern = /hi/
+    rule = new Rule
+      name: 'rule name'
+      type: 'text'
+      pattern: pattern
+      handler: (cb) ->
+        handlerCalled = true
+        cb null, 'welcome'
+
+    expect(rule.pattern).to.equal pattern
+    done()
+
+describe 'Rule', ->
   textRule =
     new Rule
       name: 'rule name'
@@ -96,7 +132,28 @@ describe 'Webot', ->
         handlerCalled = true
         cb null, 'welcome'
 
-    textMessage = new Message
+    rule.process(textMessage).then (result) ->
+      expect(handlerCalled).to.equal true
+      done()
+
+  it 'rule handler', (done) ->
+    result = textRule.process(textMessage).then (message) ->
+      expect(message).equal 'welcome'
+      done()
+
+describe 'Rule pattern', ->
+  textRule =
+    new Rule
+      name: 'rule name'
+      type: 'text'
+      pattern:
+        content: /hi/
+      handler: (callback) ->
+        replyMessage = 'welcome'
+        callback null, replyMessage
+
+  textMessage =
+    new Message
       ToUserName: 'bruce'
       FromUserName: 'test'
       CreateTime: Date.now
@@ -104,11 +161,7 @@ describe 'Webot', ->
       Content: 'hi'
       MsgId: 1
 
-    rule.process(textMessage).then (result) ->
-      expect(handlerCalled).to.equal true
-      done()
-
-  it 'rule handler', (done) ->
+  it 'string rule pattern', (done) ->
     result = textRule.process(textMessage).then (message) ->
       expect(message).equal 'welcome'
       done()
