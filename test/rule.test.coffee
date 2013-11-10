@@ -4,7 +4,7 @@ sinon = require 'sinon'
 Rule = require '../src/rule'
 Message = require '../src/message'
 
-describe 'Construct Rule', ->
+describe 'Construct Rule for text message', ->
   textRule =
     new Rule
       name: 'rule name'
@@ -15,7 +15,7 @@ describe 'Construct Rule', ->
         replyMessage = 'welcome'
         callback null, replyMessage
 
-  it 'string rule pattern', (done) ->
+  it 'String rule pattern', (done) ->
     rule = new Rule
       name: 'rule name'
       type: 'text'
@@ -27,7 +27,7 @@ describe 'Construct Rule', ->
     expect(rule.pattern).to.be.an.instanceof RegExp
     done()
 
-  it 'string rule pattern', (done) ->
+  it 'RegExp rule pattern', (done) ->
     pattern = /hi/
     rule = new Rule
       name: 'rule name'
@@ -38,6 +38,86 @@ describe 'Construct Rule', ->
         cb null, 'welcome'
 
     expect(rule.pattern).to.equal pattern
+    done()
+
+  it 'Function rule pattern', (done) ->
+    rule = new Rule
+      name: 'rule name'
+      type: 'text'
+      pattern: (textMessage) -> textMessage.content is 'hi'
+      handler: (cb) ->
+        handlerCalled = true
+        cb null, 'welcome'
+
+    expect(rule.pattern).to.be.a 'function'
+    done()
+
+  it 'rule pattern of object type should contain content property', (done) ->
+    construct = ->
+      rule = new Rule
+        name: 'rule name'
+        type: 'text'
+        pattern:
+          test: 'test'
+        handler: (cb) ->
+          handlerCalled = true
+          cb null, 'welcome'
+
+    expect(construct).to.throw Error
+    done()
+
+describe 'Construct Rule for event message', ->
+  textRule =
+    new Rule
+      name: 'rule name'
+      type: 'event'
+      pattern:
+        event: 'EVENT'
+        eventKey: 'subscribe'
+      handler: (callback) ->
+        replyMessage = 'welcome'
+        callback null, replyMessage
+
+  it 'String rule pattern', (done) ->
+    rule = new Rule
+      name: 'rule name'
+      type: 'event'
+      pattern:
+        event: 'EVENT'
+        eventKey: 'subscribe'
+      handler: (cb) ->
+        cb null, 'welcome'
+
+    expect(rule.pattern.event).to.be.an.instanceof RegExp
+    expect(rule.pattern.eventKey).to.be.an.instanceof RegExp
+    done()
+
+  it 'RegExp rule pattern', (done) ->
+    eventPattern = /EVENT/
+    eventKeyPattern = /subscribe/
+    rule = new Rule
+      name: 'rule name'
+      type: 'event'
+      pattern:
+        event: eventPattern
+        eventKey: eventKeyPattern
+      handler: (cb) ->
+        cb null, 'welcome'
+
+    expect(rule.pattern.event).to.equal eventPattern
+    expect(rule.pattern.eventKey).to.equal eventKeyPattern
+    done()
+
+  it 'Function rule pattern', (done) ->
+    rule = new Rule
+      name: 'rule name'
+      type: 'text'
+      pattern: (textMessage) -> textMessage.content is 'hi'
+      handler: (cb) ->
+        handlerCalled = true
+        cb null, 'welcome'
+
+    expect(rule.pattern).to.be.a 'function'
     done()
 
 describe 'Rule', ->
